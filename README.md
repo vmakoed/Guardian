@@ -23,7 +23,7 @@ The project is under development.
 **What's to be done**:
 * acquire the list of mounted USB storage devices
 * make desired USB storage a guardian
-* pair an item to a guardian
+* pair an item with a guardian
 * set access restriction rules
 * implement a real-time connected devices monitoring 
   
