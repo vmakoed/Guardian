@@ -1,0 +1,319 @@
+QWidget {
+    font-family: "Calibri";
+    font-size: 20px;
+}
+
+QPushButton {
+    background-color: transparent;
+    color: #646464;
+}
+
+ItemsMain {
+    min-width: 896px;
+    min-height: 500px;
+    max-height: 500px;
+}
+
+ItemsView {
+    background-color: #FFFFFF;
+}
+
+ItemWidget {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E6E6E6;
+    min-height: 48px;
+    max-height: 48px;
+    min-width: 870px;
+    max-width: 870px;
+}
+
+ItemWidget #itemPic {
+    min-width: 30px;
+    max-width: 30px;
+    min-height: 30px;
+    max-height: 30px;
+    border-radius: 15px;
+    background : solid #FFFFFF;
+}
+
+#guardianWidget {
+    background-color: #FFFFFF;
+    border: none;
+    border-bottom: 1px solid #E6E6E6;
+    min-height: 48px;
+    max-height: 48px;
+    min-width: 870px;
+    max-width: 870px;
+    color: #212121;
+}
+
+#fileItemWidget #itemPic{
+    image: url(:/img/filesIcon.png);
+}
+
+#folderItemWidget #itemPic{
+    image: url(:/img/foldersIcon.png);
+}
+
+#appItemWidget #itemPic{
+    image: url(:/img/appsIcon.png);
+}
+
+#nameLabel {
+    color: #212121;
+}
+
+#guardianLabel {
+    background-color: #2095F2;
+    color: #FFFFFF;
+    padding: 2px;
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 24px;
+    max-height: 24px;
+    border-radius: 4px;
+    font-weight: bold;
+    qproperty-alignment: AlignCenter;
+}
+
+#addButton {
+    min-width: 180px;
+    max-width: 180px;
+    min-height: 36px;
+    max-height: 36px;
+}
+
+#addItemButton {
+    background-color: #F44336;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin-left: 30px;
+    border-radius: 2px;
+}
+
+#addItemButton:hover {
+    background-color: #D32F2F;
+}
+
+#addGuardianButton {
+    background-color: #2196F3;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin-left: 30px;
+    border-radius: 2px;
+}
+
+#addGuardianButton:hover {
+    background-color: #1976D2;
+}
+
+#navigation {
+    min-width:220px;
+    max-width:220px;
+    background-color: #FAFAFA;
+    border-right: 1px solid #E1E1E1;
+}
+
+#navigation QToolButton {
+    width:200px;
+    height:48px;
+    background-color: transparent;
+    color: #212121;
+    image-position: left;
+    text-align: left;
+    padding-left: 30px;
+    border: none;
+}
+
+#navigation QToolButton:hover {
+    background-color: rgba(179, 179, 179, 0.2);
+}
+
+#navigation QToolButton:checked {
+    color: #F44336;
+    font-weight: bold;
+}
+
+#navigation #guardiansButton {
+    image: url(:/img/guardiansButton.png);
+    border-top: 1px solid #E1E1E1;
+}
+
+#navigation #guardiansButton:checked {
+    color: #2196F3;
+    image: url(:/img/guardiansButtonChecked.png);
+}
+
+#navigation #filesButton {
+    border-top: 1px solid #E1E1E1;
+    image: url(:/img/filesButton.png);
+}
+
+#navigation #filesButton:checked {
+    image: url(:/img/filesButtonChecked.png);
+}
+
+#foldersButton {
+    image: url(:/img/foldersButton.png);
+}
+
+#foldersButton:checked {
+    image: url(:/img/foldersButtonChecked.png);
+}
+
+#appsButton {
+    image: url(:/img/appsButton.png);
+}
+
+#appsButton:checked {
+    image: url(:/img/appsButtonChecked.png);
+}
+
+#toolbar{
+    background: solid qlineargradient(x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(250, 250, 250, 1),
+                                      stop:0.939 rgba(250, 250, 250, 1), stop:0.94 rgba(204, 204, 204, 1),
+                                      stop:1 rgba(204, 204, 204, 0));
+
+    min-height: 80px;
+    padding-left: 30px;
+}
+
+#appIcon {
+    min-width: 48px;
+    max-width: 48px;
+    min-height: 48px;
+    max-height: 48px;
+
+    image: url(:/img/guardianIcon.png);
+}
+
+#appTitle {
+    font-family: "Roboto Light";
+    color: #727272;
+    font-size: 36px;
+}
+
+#toolbar QPushButton {
+    background-color: transparent;
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+}
+
+#infoButton{
+    border-image: url(:/img/infoButton.png);
+}
+
+#infoButton:hover {
+    border-image: url(:/img/infoButtonHover.png);
+}
+
+#settingsButton{
+    border-image: url(:/img/settingsButton.png);
+}
+
+#settingsButton:hover {
+    border-image: url(:/img/settingsButtonHover.png);
+}
+
+#toolbar #closeButton{
+    border-image: url(:/img/closeButton.png);
+}
+
+#toolbar #closeButton:hover {
+    border-image: url(:/img/closeButtonHover.png);
+}
+
+#deleteButton{
+    border-image: url(:/img/deleteButton.png);
+}
+
+#deleteButton:hover {
+    border-image: url(:/img/deleteButtonHover.png);
+}
+
+#addItemDialog {
+    background: #FFFFFF;
+    border: 1px solid #E1E1E1;
+    min-width: 200px;
+}
+
+#addItemDialog #title {
+    min-height: 56px;
+    max-height: 56px;
+    padding-left: 15px;
+    text-align: left;
+    font-size: 24px;
+    color: #1F1F1F;
+}
+
+#addItemDialog #optionButton {
+    text-align: left;
+    min-width: 200px;
+    min-height: 48px;
+    max-height: 48px;
+    padding-left: 20px;
+    border: none;
+    color: #1F1F1F;
+}
+
+#addItemDialog #closeButton {
+    text-align: right;
+    padding-right: 20px;
+    min-height: 48px;
+    max-height: 48px;
+    color: #F44336;
+    font-weight: bold;
+}
+
+#addItemDialog #closeButton::hover {
+    color: #1C1C1C;
+}
+
+#addItemDialog #optionButton:hover {
+    background-color: rgba(179, 179, 179, 0.2);
+}
+
+#addGuardianDialog {
+    background: #FFFFFF;
+    border: 1px solid #E1E1E1;
+    min-width: 400px;
+}
+
+#addGuardianDialog #title {
+    min-height: 56px;
+    max-height: 56px;
+    padding-left: 15px;
+    text-align: left;
+    font-size: 24px;
+    color: #1F1F1F;
+}
+
+#addGuardianDialog #button {
+    text-align: right;
+    padding-right: 20px;
+    min-height: 48px;
+    max-height: 48px;
+    color: #2196F3;
+    font-weight: bold;
+}
+
+#addGuardianDialog #button:hover {
+    color: #1976D2;
+}
+
+#addGuardianDialog #button:disabled {
+    color: #B6B6B6;
+}
+
+#addGuardianDialog #guardianInput {
+    padding-right: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    min-height: 48px;
+    max-height: 48px;
+    border: none;
+    border-bottom: 1px solid #1976D2;
+    color: #1F1F1F;
+}

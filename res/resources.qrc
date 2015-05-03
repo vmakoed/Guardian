@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/qss">
+        <file>stylesheet.qss</file>
+    </qresource>
+    <qresource prefix="/img">
+        <file>closeButton.png</file>
+        <file>closeButtonHover.png</file>
+        <file>filesButton.png</file>
+        <file>appsButton.png</file>
+        <file>filesButtonChecked.png</file>
+        <file>appsButtonChecked.png</file>
+        <file>foldersButtonChecked.png</file>
+        <file>foldersButton.png</file>
+        <file>settingsButton.png</file>
+        <file>settingsButtonHover.png</file>
+        <file>infoButton.png</file>
+        <file>infoButtonHover.png</file>
+        <file>deleteButton.png</file>
+        <file>deleteButtonHover.png</file>
+        <file>guardianIcon.png</file>
+        <file>filesIcon.png</file>
+        <file>appsIcon.png</file>
+        <file>foldersIcon.png</file>
+        <file>guardiansButton.png</file>
+        <file>guardiansButtonChecked.png</file>
+    </qresource>
+</RCC>
