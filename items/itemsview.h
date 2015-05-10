@@ -13,7 +13,6 @@ class ItemsView : public QWidget
 
 private:
     QList<ItemWidget*> *itemsListBox;
-    QButtonGroup *guardiansListBox;
 
 public:
     explicit ItemsView(QWidget *parent = 0);
@@ -27,9 +26,8 @@ signals:
 
 public slots:
     void setItems(QList<Item *> *itemsList);
-    void setGuardians(QStringList *guardians);
-    void getItem(ITEM_TYPE type, Guardian *guardian);
-    void acquireDeleteItem();
+    Item* getItem(ITEM_TYPE type, Guardian *guardian);
+    Item *acquireDeleteItem();
 
 };
 

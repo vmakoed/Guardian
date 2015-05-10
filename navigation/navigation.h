@@ -7,9 +7,6 @@
 #include <QButtonGroup>
 #include <QStackedWidget>
 
-#include "add/additemdialog.h"
-#include "add/addguardiandialog.h"
-#include "add/selectguardian.h"
 #include "items/item.h"
 
 class Navigation : public QWidget
@@ -28,12 +25,6 @@ private:
     QToolButton *appsButton;
     QToolButton *guardiansButton;
 
-    // TODO: separate context dialogs from navigation
-    AddItemDialog *addItemDialog;
-    AddGuardianDialog *addGuardianDialog;
-    SelectGuardian *selectGuardianDialog;
-    QString *pickedType;
-
 public:
     explicit Navigation(QWidget *parent = 0);
     ~Navigation();
@@ -41,15 +32,14 @@ public:
     void paintEvent(QPaintEvent *);
 
 signals:
-    void navButtonClicked(QAbstractButton *navButton);
-    void addItemRequested(ITEM_TYPE type, Guardian *guardian);
-    void addGuardianRequested(QString guardianName);
+    void typeSwitched(ITEM_TYPE type);
+    void guardiansSwitched();
+    void addGuardianClicked();
 
 public slots:
-    void forceCheck(QString buttonText);
-    void selectGuardian(QString itemType);
-    void sendAddItemSignal(QString guardianName);
+    void forceCheck(ITEM_TYPE type);
     void switchAddButton(QAbstractButton *navButton);
+    void switchCategory(QAbstractButton *navButton);
 };
 
 #endif // NAVIGATION_H

@@ -1,6 +1,6 @@
 #include "itemsview.h"
 
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QFileDialog>
 
 #include <QStyleOption>
@@ -9,7 +9,6 @@
 ItemsView::ItemsView(QWidget *parent) : QWidget(parent)
 {
     itemsListBox = new QList<ItemWidget*>;
-    guardiansListBox = new QButtonGroup;
 
     auto *rootLayout = new QVBoxLayout;
     rootLayout->setSpacing(0);
@@ -60,33 +59,7 @@ void ItemsView::setItems(QList<Item *> *itemsList)
     }
 }
 
-void ItemsView::setGuardians(QStringList *guardians)
-{
-    clear();
-
-    for(auto guardian : *guardians)
-    {
-        guardiansListBox->addButton(new QPushButton(guardian));
-    }
-
-    for(auto guardianWidget : guardiansListBox->buttons())
-    {
-        this->layout()->addWidget(guardianWidget);
-        guardianWidget->setObjectName("guardianWidget");
-
-        for(auto guardianCheckedWidget: guardiansListBox->buttons())
-        {
-            if(guardianWidget != guardianCheckedWidget)
-            {
-                //TODO: check-uncheck
-
-                //connect(guardianWidget, &QPushButton::clicked, guardianCheckedWidget, &QPushButton::setChecked);
-            }
-        }
-    }
-}
-
-void ItemsView::getItem(ITEM_TYPE type, Guardian *guardian)
+Item* ItemsView::getItem(ITEM_TYPE type, Guardian *guardian)
 {
     QFileDialog dialog;
     dialog.setParent(this);
@@ -113,7 +86,7 @@ void ItemsView::getItem(ITEM_TYPE type, Guardian *guardian)
 
     if(path.isEmpty())
     {
-        return;
+        return nullptr;
     }
 
     int index;
@@ -128,17 +101,11 @@ void ItemsView::getItem(ITEM_TYPE type, Guardian *guardian)
         index++;
     }
 
-    emit itemRetrieved(new Item(name, path[0], type, guardian));
+    return (new Item(name, path[0], type, guardian));
 }
 
 void ItemsView::clear()
 {
-    for(auto guardianWidget: guardiansListBox->buttons())
-    {
-        this->layout()->removeWidget(guardianWidget);
-        delete guardianWidget;
-    }
-
     for(auto itemWidget : *itemsListBox)
     {
         this->layout()->removeWidget(itemWidget);
@@ -148,7 +115,7 @@ void ItemsView::clear()
     itemsListBox->clear();
 }
 
-void ItemsView::acquireDeleteItem()
+Item* ItemsView::acquireDeleteItem()
 {
     Item *item;
 
@@ -162,7 +129,7 @@ void ItemsView::acquireDeleteItem()
         }
     }
 
-    emit deleteItemAcquired(item);
+    return item;
 }
 
 void ItemsView::paintEvent(QPaintEvent *)

@@ -21,6 +21,7 @@ public:
     static void dropTable(QString table);
     static QStringList* selectText(QString column, QString table, QString *whereClause = 0);
     static QList<int>* selectInteger(QString column, QString table, QString *whereClause = 0);
+    static QList<bool>* selectBoolean(QString column, QString table, QString *whereClause = 0);
     static void prepare(QString prepareText);
     static void bind(QString column, int value);
     static void bind(QString column, QString value);

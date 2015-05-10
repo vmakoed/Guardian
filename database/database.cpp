@@ -101,6 +101,31 @@ QList<int>* Database::selectInteger(QString column, QString table, QString *wher
     return values;
 }
 
+QList<bool>* Database::selectBoolean(QString column, QString table, QString *whereClause)
+{
+    QList<bool> *values = new QList<bool>;
+
+    if(whereClause == 0)
+    {
+        query.exec("select " + column + " from " + table + ";");
+    }
+    else
+    {
+        query.exec("select " + column + " from " + table + " " + *whereClause + ";");
+    }
+    query.first();
+
+    do
+    {
+        if(query.isValid())
+        {
+            values->append(query.value(0).toBool());
+        }
+    } while(query.next());
+
+    return values;
+}
+
 void Database::bind(QString column, int value)
 {
     query.bindValue(":" + column, value);

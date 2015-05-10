@@ -2,21 +2,28 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
-
+#include <QStackedWidget>
 #include <QMouseEvent>
 
-#include "items/itemsmain.h"
+#include "items/itemspresenter.h"
+#include "guardians/guardianspresenter.h"
 #include "navigation/navigation.h"
 #include "toolbar/toolbar.h"
+#include "drivesscanner/drivesscanner.h"
 
 class MainWindow : public QWidget
 {
     Q_OBJECT
 
 private:
-    ItemsMain *items;
+    ItemsPresenter *items;
+    GuardiansPresenter *guardians;
+    QStackedWidget *listBox;
+
     Navigation *navigation;
     Toolbar *toolbar;
+
+    DrivesScanner *scanner;
 
     int clickX;
     int clickY;
@@ -30,8 +37,11 @@ public:
     void closeEvent(QCloseEvent *);
 
 public slots:
-    void setType(QAbstractButton *button);
-    void forceNavigation(ITEM_TYPE type);
+    void addItem(ITEM_TYPE type, Guardian *guardian);
+    void setType(ITEM_TYPE type);
+    void setGuardians();
+    void showAddGuardianDialog();
+    void addGuardian(QString drive, QString name);
 };
 
 #endif // MAINWINDOW_H

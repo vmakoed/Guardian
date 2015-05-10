@@ -67,22 +67,12 @@ Navigation::Navigation(QWidget *parent) : QWidget(parent)
 
     setLayout(rootLayout);
 
-    // TODO: separate context dialogs from navigation
-    addItemDialog = new AddItemDialog(this);
-    addItemDialog->setModal(true);
-    addGuardianDialog = new AddGuardianDialog(this);
-    addGuardianDialog->setModal(true);
-    pickedType = new QString;
 
     // Qt5-style connects don't work here:
-    connect(navButtonGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SIGNAL(navButtonClicked(QAbstractButton*)));
+    connect(navButtonGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(switchCategory(QAbstractButton*)));
     connect(navButtonGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(switchAddButton(QAbstractButton*)));
 
-    connect(addItemButton, &QPushButton::clicked, addItemDialog, &AddItemDialog::show);
-    connect(addGuardianButton, &QPushButton::clicked, addGuardianDialog, &AddGuardianDialog::show);
-    connect(addItemDialog, &AddItemDialog::optionPicked, this, &Navigation::selectGuardian);
-    connect(addGuardianDialog, &AddGuardianDialog::nameObtained, this, &Navigation::addGuardianRequested);
-    connect(addGuardianButton, &QPushButton::clicked, addGuardianDialog, &AddGuardianDialog::show);
+    connect(addGuardianButton, &QPushButton::clicked, this, &Navigation::addGuardianClicked);
 }
 
 Navigation::~Navigation()
@@ -90,8 +80,23 @@ Navigation::~Navigation()
 
 }
 
-void Navigation::forceCheck(QString buttonText)
+void Navigation::forceCheck(ITEM_TYPE type)
 {
+    QString buttonText;
+
+    if(type == ITEM_FILE)
+    {
+        buttonText = "Files";
+    }
+    else if(type == ITEM_FOLDER)
+    {
+        buttonText = "Folders";
+    }
+    else if(type == ITEM_APP)
+    {
+        buttonText = "Apps";
+    }
+
     for(auto navButton : navButtonGroup->buttons())
     {
         if(navButton->text() == buttonText)
@@ -102,49 +107,23 @@ void Navigation::forceCheck(QString buttonText)
     }
 }
 
-void Navigation::selectGuardian(QString itemType)
+void Navigation::switchCategory(QAbstractButton *button)
 {
-    pickedType->clear();
-    pickedType->append(itemType);
-
-    QStringList *guardianNames = new QStringList;
-    guardianNames = Database::selectText("guardianname", "guardian");
-
-    selectGuardianDialog = new SelectGuardian(this, guardianNames);
-    selectGuardianDialog->setModal(true);
-    connect(selectGuardianDialog, &SelectGuardian::optionPicked, this, &Navigation::sendAddItemSignal);
-    selectGuardianDialog->show();
-}
-void Navigation::paintEvent(QPaintEvent *)
-{
-    QStyleOption opt;
-    opt.init(this);
-    QPainter p(this);
-    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-}
-
-void Navigation::sendAddItemSignal(QString guardianName)
-{
-    QList<int> *id = new QList<int>;
-    QString *whereClause = new QString("where guardianname = '");
-    whereClause->append(guardianName);
-    whereClause->append("'");
-
-    id = Database::selectInteger("guardianid", "guardian", whereClause);
-
-    Guardian *guardian = new Guardian(id->at(0), guardianName);
-
-    if(*pickedType == "File")
+    if(button->text() == "Files")
     {
-        emit addItemRequested(ITEM_FILE, guardian);
+        emit typeSwitched(ITEM_FILE);
     }
-    else if(*pickedType == "Folder")
+    else if(button->text() == "Folders")
     {
-        emit addItemRequested(ITEM_FOLDER, guardian);
+        emit typeSwitched(ITEM_FOLDER);
     }
-    else if(*pickedType == "App")
+    else if(button->text() == "Apps")
     {
-        emit addItemRequested(ITEM_APP, guardian);
+        emit typeSwitched(ITEM_APP);
+    }
+    else if(button->text() == "Guardians")
+    {
+        emit guardiansSwitched();
     }
 }
 
@@ -159,3 +138,12 @@ void Navigation::switchAddButton(QAbstractButton *navButton)
         addButton->setCurrentWidget(addItemButton);
     }
 }
+
+void Navigation::paintEvent(QPaintEvent *)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+

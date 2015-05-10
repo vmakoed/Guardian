@@ -3,7 +3,7 @@
 
 ItemsModel::ItemsModel(QObject *parent) : QObject(parent)
 {
-    items = new QList<Item*>;
+
 }
 
 ItemsModel::~ItemsModel()
@@ -19,10 +19,7 @@ void ItemsModel::addItem(Item *item)
     Database::bind("itemname", item->getName());
     Database::bind("itempath", item->getPath());
     Database::bind("itemtype", item->getType());
-    Database::bind("itemguardian", item->getGuardian()->getId());
     Database::exec();
-
-    emit itemsUpdated(item->getType());
 }
 
 
@@ -31,12 +28,9 @@ void ItemsModel::deleteItem(Item *item)
     Database::prepare("delete from item where itempath = :itempath;");
     Database::bind("itempath", item->getPath());
     Database::exec();
-
-    emit itemsUpdated(item->getType());
-
 }
 
-void ItemsModel::acquireItems(ITEM_TYPE type)
+QList<Item*>* ItemsModel::items(ITEM_TYPE type)
 {
     QStringList *names = new QStringList;
     QStringList *paths = new QStringList;
@@ -61,7 +55,8 @@ void ItemsModel::acquireItems(ITEM_TYPE type)
     paths = Database::selectText("itempath", "item", whereClause);
     guardianIDs = Database::selectInteger("itemguardian", "item", whereClause);
 
-    items->clear();
+    QList<Item*> *itemsList = new QList<Item*>;
+    itemsList->clear();
 
     QStringList *guardianNames = new QStringList;
     guardianNames = Database::selectText("guardianname", "guardian");
@@ -70,37 +65,13 @@ void ItemsModel::acquireItems(ITEM_TYPE type)
     
     for(int i = 0; i < guardianNames->size(); i++)
     {
-        guardians->append(new Guardian(i + 1, guardianNames->at(i)));
+        guardians->append(new Guardian(guardianNames->at(i)));
     }
        
     for(int i = 0; i < names->size(); i++)
     {
-        items->append(new Item(names->at(i), paths->at(i), type, guardians->at(guardianIDs->at(i) - 1)));
+        itemsList->append(new Item(names->at(i), paths->at(i), type, guardians->at(guardianIDs->at(i) - 1)));
     }
 
-    emit itemsAcquired(items);
-}
-
-void ItemsModel::acquireGuardians()
-{
-    QStringList *guardians = new QStringList;
-
-    guardians = Database::selectText("guardianname", "guardian");
-
-    emit guardiansAcquired(guardians);
-}
-
-void ItemsModel::addGuardian(QString guardianName)
-{
-    QList<int> *guardians = new QList<int>;
-    guardians = Database::selectInteger("guardianid", "guardian");
-
-    Database::prepare("insert into guardian values(:guardianid, :guardianname);");
-    Database::bind("guardianid", guardians->last() + 1);
-    Database::bind("guardianname", guardianName);
-    Database::exec();
-
-    delete guardians;
-
-    emit guardiansUpdated();
+    return itemsList;
 }

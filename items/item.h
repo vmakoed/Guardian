@@ -3,7 +3,7 @@
 
 #include <QString>
 
-#include <items/guardian.h>
+#include "guardians/guardian.h"
 
 typedef enum {ITEM_FILE = 1, ITEM_FOLDER = 2, ITEM_APP = 3} ITEM_TYPE;
 

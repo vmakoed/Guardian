@@ -1,12 +1,11 @@
-#include "itemsmain.h"
+#include "itemspresenter.h"
 
 #include <QHBoxLayout>
 
-ItemsMain::ItemsMain(QWidget *parent) : QScrollArea(parent)
+ItemsPresenter::ItemsPresenter(QWidget *parent) : QScrollArea(parent)
 {
     itemsModel = new ItemsModel;
     itemsView = new ItemsView;
-    itemsController = new ItemsController(itemsModel, itemsView);
 
     auto *rootLayout = new QHBoxLayout();
     rootLayout->setSpacing(0);
@@ -28,39 +27,29 @@ ItemsMain::ItemsMain(QWidget *parent) : QScrollArea(parent)
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFrameShape(QFrame::NoFrame);
-
-    connect(itemsController, &ItemsController::itemsUpdated, this, &ItemsMain::itemsUpdated);
-    setType(ITEM_FILE);
 }
 
-ItemsMain::~ItemsMain()
+ItemsPresenter::~ItemsPresenter()
 {
 
 }
 
-void ItemsMain::addItem(ITEM_TYPE type, Guardian *guardian)
+void ItemsPresenter::addItem(ITEM_TYPE type, Guardian *guardian)
 {
-    itemsController->addItem(type, guardian);
+    itemsModel->addItem(itemsView->getItem(type, guardian));
+    refreshItems(type);
 }
 
-void ItemsMain::addGuardian(QString guardianName)
+void ItemsPresenter::deleteItem()
 {
-    itemsController->addGuardian(guardianName);
+    Item *item;
+    item = itemsView->acquireDeleteItem();
+    itemsModel->deleteItem(item);
+    refreshItems(item->getType());
 }
 
-void ItemsMain::deleteItem()
+void ItemsPresenter::refreshItems(ITEM_TYPE type)
 {
-    itemsController->deleteItem();
+    itemsView->setItems(itemsModel->items(type));
+    emit itemsRefreshed(type);
 }
-
-void ItemsMain::setType(ITEM_TYPE type)
-{
-    itemsController->setType(type);
-}
-
-void ItemsMain::setGuardians()
-{
-    itemsController->setGuardians();
-}
-
-

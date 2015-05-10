@@ -58,27 +58,14 @@ void ItemWidget::setItem(Item *item)
 void ItemWidget::uncheck()
 {
     setChecked(false);
-    setStyleSheet("\
-    .ItemWidget { \
-        background-color: #FFFFFF; \
-    }");
+    setStyleSheet(".ItemWidget { background-color: #FFFFFF; }");
 }
 
 void ItemWidget::check()
 {
-    setStyleSheet("\
-    .ItemWidget { \
-        background-color: #2095F2; \
-    } \
-    \
-    #nameLabel { \
-        color: #FFFFFF \
-    } \
-    \
-    #guardianLabel { \
-        background-color: #FFFFFF; \
-        color: #2095F2 ; \
-    }");
+    setStyleSheet(".ItemWidget { background-color: #2095F2; }    \
+                    #nameLabel { color: #FFFFFF } \
+                    #guardianLabel { background-color: #FFFFFF; color: #2095F2; }");
 }
 
 void ItemWidget::paintEvent(QPaintEvent *)

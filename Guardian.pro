@@ -18,35 +18,54 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     items/itemwidget.cpp \
     items/itemsview.cpp \
-    items/itemscontroller.cpp \
     items/itemsmodel.cpp \
-    items/itemsmain.cpp \
     toolbar/toolbar.cpp \
     navigation/navigation.cpp \
     items/item.cpp \
     database/database.cpp \
-    navigation/add/additemdialog.cpp \
-    navigation/add/addguardiandialog.cpp \
-    items/guardian.cpp \
-    navigation/add/selectguardian.cpp
+    items/itemspresenter.cpp \
+    addguardian/addguardiandialog.cpp \
+    mount/getStoragesInfo.cpp \
+    addguardian/drivewidget.cpp \
+    guardians/guardiansmodel.cpp \
+    crypto/encryptFunctions.cpp \
+    crypto/Rijndael.cpp \
+    file/fileFunctions.cpp \
+    string/stringFunctions.cpp \
+    guardians/guardianwidget.cpp \
+    guardians/guardian.cpp \
+    guardians/guardiansview.cpp \
+    guardians/guardianspresenter.cpp \
+    drivesscanner/drivesscanner.cpp
 
 HEADERS  += mainwindow.h \
     items/itemwidget.h \
     items/itemsview.h \
-    items/itemscontroller.h \
     items/itemsmodel.h \
-    items/itemsmain.h \
     toolbar/toolbar.h \
     navigation/navigation.h \
     items/item.h \
     database/database.h \
-    navigation/add/additemdialog.h \
-    navigation/add/addguardiandialog.h \
-    items/guardian.h \
-    navigation/add/selectguardian.h
+    items/itemspresenter.h \
+    addguardian/addguardiandialog.h \
+    mount/getStoragesInfo.h \
+    addguardian/drivewidget.h \
+    guardians/guardiansmodel.h \
+    crypto/encryptFunctions.h \
+    crypto/Rijndael.h \
+    file/fileFunctions.h \
+    string/stringFunctions.h \
+    guardians/guardianwidget.h \
+    guardians/guardian.h \
+    guardians/guardiansview.h \
+    guardians/guardianspresenter.h \
+    mount/storageinfo.h \
+    drivesscanner/drivesscanner.h
 
 DISTFILES += \
     res/stylesheet.qss
 
 RESOURCES += \
     res/resources.qrc
+
+@win32:LIBS += -LC:/Windows/System32 -lcrypt32@
