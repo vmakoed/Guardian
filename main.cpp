@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "maincontroller.h"
 #include <QApplication>
 
 #include <QFile>
@@ -7,9 +7,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // If you include a *qss file from qrc (project resources), you'll have to recompile the whole project every time
-    // you run it. So for now we're leaving it this way (insert your projects' folder path before /Guardian/res).
-
     QFile File("C:/Users/Victor Makoed/Google Drive/Qt Creator/Guardian/res/stylesheet.qss");
 
     File.open(QFile::ReadOnly);
@@ -17,8 +14,8 @@ int main(int argc, char *argv[])
 
     a.setStyleSheet(StyleSheet);
 
-    MainWindow w;
-    w.show();
+    MainController *mainController = new MainController;
+    mainController->launch();
 
     return a.exec();
 }

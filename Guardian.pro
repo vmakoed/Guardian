@@ -1,11 +1,12 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-04-29T14:12:01
+# Project created by QtCreator 2015-05-30T20:41:43
 #
 #-------------------------------------------------
 
 QT       += core gui
 QT       += sql
+
 CONFIG   += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -14,58 +15,62 @@ TARGET = Guardian
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    items/itemwidget.cpp \
-    items/itemsview.cpp \
-    items/itemsmodel.cpp \
-    toolbar/toolbar.cpp \
-    navigation/navigation.cpp \
-    items/item.cpp \
+SOURCES += main.cpp \
+    common/stringFunctions.cpp \
     database/database.cpp \
-    items/itemspresenter.cpp \
-    addguardian/addguardiandialog.cpp \
-    mount/getStoragesInfo.cpp \
-    addguardian/drivewidget.cpp \
-    guardians/guardiansmodel.cpp \
-    crypto/encryptFunctions.cpp \
-    crypto/Rijndael.cpp \
-    file/fileFunctions.cpp \
-    string/stringFunctions.cpp \
-    guardians/guardianwidget.cpp \
-    guardians/guardian.cpp \
-    guardians/guardiansview.cpp \
-    guardians/guardianspresenter.cpp \
-    drivesscanner/drivesscanner.cpp
+    database/datamanager.cpp \
+    drivesscanner/drivesscanner.cpp \
+    drivesscanner/getStoragesInfo.cpp \
+    fileencryption/encryptFunctions.cpp \
+    fileencryption/encryptmanager.cpp \
+    fileencryption/fileencryption.cpp \
+    fileencryption/fileFunctions.cpp \
+    fileencryption/filemanager.cpp \
+    fileencryption/Rijndael.cpp \
+    gui/addguardiandialog.cpp \
+    gui/additemdialog.cpp \
+    gui/drivelistwidget.cpp \
+    gui/guardianlistwidget.cpp \
+    gui/icontextlabel.cpp \
+    gui/itemlistwidget.cpp \
+    gui/mainwindow.cpp \
+    itemslocker/itemslocker.cpp \
+    itemslocker/redefineAccess.cpp \
+    itemslocker/systemlocker.cpp \
+    guardian.cpp \
+    item.cpp \
+    maincontroller.cpp
 
-HEADERS  += mainwindow.h \
-    items/itemwidget.h \
-    items/itemsview.h \
-    items/itemsmodel.h \
-    toolbar/toolbar.h \
-    navigation/navigation.h \
-    items/item.h \
+HEADERS  += \
+    common/stringFunctions.h \
     database/database.h \
-    items/itemspresenter.h \
-    addguardian/addguardiandialog.h \
-    mount/getStoragesInfo.h \
-    addguardian/drivewidget.h \
-    guardians/guardiansmodel.h \
-    crypto/encryptFunctions.h \
-    crypto/Rijndael.h \
-    file/fileFunctions.h \
-    string/stringFunctions.h \
-    guardians/guardianwidget.h \
-    guardians/guardian.h \
-    guardians/guardiansview.h \
-    guardians/guardianspresenter.h \
-    mount/storageinfo.h \
-    drivesscanner/drivesscanner.h
-
-DISTFILES += \
-    res/stylesheet.qss
+    database/datamanager.h \
+    drivesscanner/drivesscanner.h \
+    drivesscanner/getStoragesInfo.h \
+    drivesscanner/storageinfo.h \
+    fileencryption/cryptobject.h \
+    fileencryption/encryptFunctions.h \
+    fileencryption/encryptmanager.h \
+    fileencryption/fileencryption.h \
+    fileencryption/fileFunctions.h \
+    fileencryption/filemanager.h \
+    fileencryption/Rijndael.h \
+    gui/addguardiandialog.h \
+    gui/additemdialog.h \
+    gui/drivelistwidget.h \
+    gui/guardianlistwidget.h \
+    gui/icontextlabel.h \
+    gui/itemlistwidget.h \
+    gui/mainwindow.h \
+    itemslocker/itemslocker.h \
+    itemslocker/RedefineAccess.h \
+    itemslocker/systemlocker.h \
+    guardian.h \
+    item.h \
+    maincontroller.h
 
 RESOURCES += \
     res/resources.qrc
 
-@win32:LIBS += -LC:/Windows/System32 -lcrypt32@
+DISTFILES += \
+    res/stylesheet.qss

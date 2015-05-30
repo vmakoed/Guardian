@@ -3,24 +3,28 @@
 
 #include <QObject>
 
-#include "file/fileFunctions.h"
-#include "mount/getStoragesInfo.h"
+#include "drivesscanner/getStoragesInfo.h"
+
+#define MAX_NUM_OF_DRIVES   20
 
 class DrivesScanner : public QObject
 {
     Q_OBJECT
+
 private:
     int drivesCapacity;
 
 public:
     explicit DrivesScanner(QObject *parent = 0);
-    void scan();
-
+    void scan(char *drives);
+    QString *getStorageName(char drive);
 signals:
-    void drivesChanged();
-    void checked();
+    void driveMounted(char driveLetter);
+    void driveUnmounted(char driveLetter);
 
 public slots:
+    void startScan();
+    void stopScan();
 };
 
 #endif // DRIVESSCANNER_H

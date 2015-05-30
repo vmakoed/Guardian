@@ -1,7 +1,4 @@
 <RCC>
-    <qresource prefix="/qss">
-        <file>stylesheet.qss</file>
-    </qresource>
     <qresource prefix="/img">
         <file>closeButton.png</file>
         <file>closeButtonHover.png</file>
@@ -23,5 +20,12 @@
         <file>foldersIcon.png</file>
         <file>guardiansButton.png</file>
         <file>guardiansButtonChecked.png</file>
+        <file>lockButtonDisabled.png</file>
+        <file>lockButtonHover.png</file>
+        <file>unlockButton.png</file>
+        <file>unlockButtonDisabled.png</file>
+        <file>unlockButtonHover.png</file>
+        <file>lockButton.png</file>
+        <file>guardianIconLabel.png</file>
     </qresource>
 </RCC>

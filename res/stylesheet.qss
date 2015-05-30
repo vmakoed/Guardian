@@ -4,136 +4,230 @@ QWidget {
 }
 
 QPushButton {
-    background-color: transparent;
-    color: #646464;
+    font-family: "Calibri";
+    font-weight: bold;
+    font-size: 21px;
 }
 
-ItemsPresenter {
+QListWidget {
+     border: none;
+     outline: 0;
+     background: transparent;
+}
+
+QListWidget::item {
+    min-height: 48px;
+    max-height: 48px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+#listboxstacked {
     min-width: 896px;
     min-height: 500px;
     max-height: 500px;
-}
-
-ItemsView {
     background-color: #FFFFFF;
 }
 
-ItemWidget {
+#guardianslistbox::item {
     background-color: #FFFFFF;
-    border-bottom: 1px solid #E6E6E6;
-    min-height: 48px;
-    max-height: 48px;
-    min-width: 870px;
-    max-width: 870px;
-}
-
-GuardiansPresenter {
-    min-width: 896px;
-    min-height: 500px;
-    max-height: 500px;
-}
-
-GuardiansView {
-    background-color: #FFFFFF;
-}
-
-GuardianWidget {
-    background-color: #FFFFFF;
-    border: none;
-    border-bottom: 1px solid #E6E6E6;
-    min-height: 48px;
-    max-height: 48px;
     min-width: 870px;
     max-width: 870px;
     color: #212121;
+    border: none;
+    border-bottom: 1px solid #E6E6E6;
 }
 
-GuardianWidget #nameLabel {
-    padding-left: 20px;
+
+#guardianslistbox::item:selected {
+    background-color: #2196F3;
+
 }
 
-GuardianWidget #stateLabel {
-    background-color: #2095F2;
-    color: #FFFFFF;
-    padding: 2px;
-    margin-right: 10px;
-    min-width: 100px;
-    max-width: 100px;
-    min-height: 24px;
-    max-height: 24px;
+
+#guardianlistwidget #namelabel {
+    background : solid #FFFFFF;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+#guardianlistwidget #drivelabel {
+    min-height: 36px;
+    max-height: 36px;
+    min-width: 36px;
+    max-width: 36px;
+    border-radius: 18px;
+    margin-right: 20px;
+    font-weight: bold;
+    color: #727272;
+}
+
+#guardianlistwidget #drivelabel:enabled {
+    background: solid #FFFFFF;
+}
+
+#guardianlistwidget #drivelabel:disabled {
+    background: none;
+}
+
+#guardianlistwidget #guardianiconlabel {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    border-radius: 18px;
+    background : solid #FFFFFF;
+    image: url(:/img/guardianIconLabel.png);
+}
+
+#itemslistbox::item {
+    background-color: #FFFFFF;
+    min-width: 870px;
+    max-width: 870px;
+    color: #212121;
+    border: none;
+    border-bottom: 1px solid #E6E6E6;
+}
+
+
+#itemslistbox::item:selected {
+    background-color: #F44336;
+}
+
+
+#itemListWidget #nameLabel {
+    background : solid #FFFFFF;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+#itemListWidget #guardianButton {
+    padding: 6px;
     border-radius: 4px;
     font-weight: bold;
-    qproperty-alignment: AlignCenter;
+    background: #FFFFFF;
+    margin-right: 20px;
 }
 
-ItemWidget #itemPic {
-    min-width: 30px;
-    max-width: 30px;
-    min-height: 30px;
-    max-height: 30px;
-    border-radius: 15px;
+#itemListWidget #guardianButton:disabled {
+    color: #B6B6B6;
+
+}
+
+#itemListWidget #guardianButton:enabled {
+    color: #727272;
+}
+
+#itemListWidget #fileLabel {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    border-radius: 18px;
     background : solid #FFFFFF;
-}
-
-#fileItemWidget #itemPic{
     image: url(:/img/filesIcon.png);
 }
 
-#folderItemWidget #itemPic{
+#itemListWidget #folderLabel {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    border-radius: 18px;
+    background : solid #FFFFFF;
     image: url(:/img/foldersIcon.png);
 }
 
-#appItemWidget #itemPic{
+#itemListWidget #appLabel {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    border-radius: 18px;
+    background : solid #FFFFFF;
     image: url(:/img/appsIcon.png);
 }
 
-#nameLabel {
-    color: #212121;
+
+#toolbar {
+    background: solid qlineargradient(x1:0.5, y1:0, x2:0.5, y2:1, stop:0 #FAFAFA,
+                                      stop:0.939 #FAFAFA, stop:0.94 rgba(204, 204, 204, 1),
+                                      stop:1 rgba(204, 204, 204, 0));
+
+    min-height: 80px;
+    padding-left: 30px;
 }
 
-#guardianLabel {
-    background-color: #2095F2;
-    color: #FFFFFF;
-    padding: 2px;
-    min-width: 100px;
-    max-width: 100px;
-    min-height: 24px;
-    max-height: 24px;
-    border-radius: 4px;
-    font-weight: bold;
-    qproperty-alignment: AlignCenter;
+#toolbar #appIcon {
+    min-width: 48px;
+    max-width: 48px;
+    min-height: 48px;
+    max-height: 48px;
+
+    image: url(:/img/guardianIcon.png);
 }
 
-#addButton {
-    min-width: 180px;
-    max-width: 180px;
+#toolbar #appTitle {
+    font-family: "Calibri Light";
+    color: #727272;
+    font-size: 40px;
+}
+
+#toolbar QPushButton {
+    background-color: transparent;
+    min-width: 36px;
+    max-width: 36px;
     min-height: 36px;
     max-height: 36px;
 }
 
-#addItemButton {
-    background-color: #F44336;
-    font-weight: bold;
-    color: #FFFFFF;
-    margin-left: 30px;
-    border-radius: 2px;
+#toolbar #lockManageButton {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
 }
 
-#addItemButton:hover {
-    background-color: #D32F2F;
+#toolbar #closeButton{
+    border-image: url(:/img/closeButton.png);
 }
 
-#addGuardianButton {
-    background-color: #2196F3;
-    font-weight: bold;
-    color: #FFFFFF;
-    margin-left: 30px;
-    border-radius: 2px;
+#toolbar #closeButton:hover {
+    border-image: url(:/img/closeButtonHover.png);
 }
 
-#addGuardianButton:hover {
-    background-color: #1976D2;
+#toolbar #deleteButton{
+    border-image: url(:/img/deleteButton.png);
 }
+
+#toolbar #deleteButton:hover {
+    border-image: url(:/img/deleteButtonHover.png);
+}
+
+#toolbar #lockButton{
+    border-image: url(:/img/lockButton.png);
+}
+
+#toolbar #lockButton:hover {
+    border-image: url(:/img/lockButtonHover.png);
+}
+
+#toolbar #lockButton:disabled {
+    border-image: url(:/img/lockButtonDisabled.png);
+}
+
+#toolbar #unlockButton{
+    border-image: url(:/img/unlockButton.png);
+}
+
+#toolbar #unlockButton:hover {
+    border-image: url(:/img/unlockButtonHover.png);
+}
+
+#toolbar #unlockButton:disabled {
+    border-image: url(:/img/unlockButtonDisabled.png);
+}
+
 
 #navigation {
     min-width:220px;
@@ -142,24 +236,55 @@ ItemWidget #itemPic {
     border-right: 1px solid #E1E1E1;
 }
 
+#navigation #addButton {
+    min-width: 192px;
+    max-width: 192px;
+    min-height: 36px;
+    max-height: 36px;
+}
+
+#navigation #addItemButton {
+    background-color: #F44336;
+    color: #FFFFFF;
+    margin-left: 30px;
+    border-radius: 2px;
+}
+
+#navigation #addItemButton:hover {
+    background-color: #D32F2F;
+}
+
+#navigation #addGuardianButton {
+    background-color: #2196F3;
+    color: #FFFFFF;
+    margin-left: 30px;
+    border-radius: 2px;
+}
+
+#navigation #addGuardianButton:hover {
+    background-color: #1976D2;
+}
+
 #navigation QToolButton {
     width:200px;
     height:48px;
     background-color: transparent;
-    color: #212121;
+    color: #727272;
     image-position: left;
     text-align: left;
     padding-left: 30px;
+    font-family: "Calibri";
+    font-weight: bold;
+    font-size: 21px;
     border: none;
 }
 
 #navigation QToolButton:hover {
-    background-color: #F0F0F0;
+    background: rgba(0, 0, 0, 0.06);
 }
 
 #navigation QToolButton:checked {
     color: #F44336;
-    font-weight: bold;
 }
 
 #navigation #guardiansButton {
@@ -181,192 +306,62 @@ ItemWidget #itemPic {
     image: url(:/img/filesButtonChecked.png);
 }
 
-#foldersButton {
+#navigation #foldersButton {
     image: url(:/img/foldersButton.png);
 }
 
-#foldersButton:checked {
+#navigation #foldersButton:checked {
     image: url(:/img/foldersButtonChecked.png);
 }
 
-#appsButton {
+#navigation #systemButton {
     image: url(:/img/appsButton.png);
 }
 
-#appsButton:checked {
+#navigation #systemButton:checked {
     image: url(:/img/appsButtonChecked.png);
 }
 
-#toolbar{
-    background: solid qlineargradient(x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(250, 250, 250, 1),
-                                      stop:0.939 rgba(250, 250, 250, 1), stop:0.94 rgba(204, 204, 204, 1),
-                                      stop:1 rgba(204, 204, 204, 0));
 
-    min-height: 80px;
-    padding-left: 30px;
-}
-
-#appIcon {
-    min-width: 48px;
-    max-width: 48px;
-    min-height: 48px;
-    max-height: 48px;
-
-    image: url(:/img/guardianIcon.png);
-}
-
-#appTitle {
-    font-family: "Roboto Light";
-    color: #727272;
-    font-size: 36px;
-}
-
-#toolbar QPushButton {
-    background-color: transparent;
-    min-width: 36px;
-    max-width: 36px;
-    min-height: 36px;
-    max-height: 36px;
-}
-
-#infoButton{
-    border-image: url(:/img/infoButton.png);
-}
-
-#infoButton:hover {
-    border-image: url(:/img/infoButtonHover.png);
-}
-
-#settingsButton{
-    border-image: url(:/img/settingsButton.png);
-}
-
-#settingsButton:hover {
-    border-image: url(:/img/settingsButtonHover.png);
-}
-
-#toolbar #closeButton{
-    border-image: url(:/img/closeButton.png);
-}
-
-#toolbar #closeButton:hover {
-    border-image: url(:/img/closeButtonHover.png);
-}
-
-#deleteButton{
-    border-image: url(:/img/deleteButton.png);
-}
-
-#deleteButton:hover {
-    border-image: url(:/img/deleteButtonHover.png);
-}
-
-#addItemDialog {
-    background: #FFFFFF;
-    border: 1px solid #E1E1E1;
-    min-width: 200px;
-}
-
-#addItemDialog #title {
-    min-height: 56px;
-    max-height: 56px;
-    padding-left: 15px;
-    text-align: left;
-    font-size: 24px;
-    color: #1F1F1F;
-}
-
-#addItemDialog #optionButton {
-    text-align: left;
-    min-width: 200px;
-    min-height: 48px;
-    max-height: 48px;
-    padding-left: 20px;
-    border: none;
-    color: #1F1F1F;
-}
-
-#addItemDialog #closeButton {
-    text-align: right;
-    padding-right: 20px;
-    min-height: 48px;
-    max-height: 48px;
-    color: #F44336;
-    font-weight: bold;
-}
-
-#addItemDialog #closeButton::hover {
-    color: #1C1C1C;
-}
-
-#addItemDialog #optionButton:hover {
-    background-color: rgba(179, 179, 179, 0.2);
-}
-
-#addGuardianDialog {
-    background: #FFFFFF;
-    border: 1px solid #E1E1E1;
-    min-width: 400px;
-}
-
-#addGuardianDialog #title {
-    min-height: 56px;
-    max-height: 56px;
-    padding-left: 15px;
-    text-align: left;
-    font-size: 24px;
-    color: #1F1F1F;
-}
-
-#addGuardianDialog #button {
-    text-align: right;
-    padding-right: 20px;
-    min-height: 48px;
-    max-height: 48px;
-    color: #2196F3;
-    font-weight: bold;
-}
-
-#addGuardianDialog #button:disabled {
-    color: #B6B6B6;
-}
-
-#addGuardianDialog #guardianInput {
-    padding-right: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
-    min-height: 48px;
-    max-height: 48px;
-    border: none;
-    border-bottom: 1px solid #1976D2;
-    color: #1F1F1F;
-}
-
-#dialog {
+QDialog {
     background: #FFFFFF;
     border: 1px solid #E1E1E1;
     border-radius: 2px;
     min-width: 400px;
 }
 
-#titleLabel {
-    margin-top: 12px;
+QDialog #titleLabel {
     min-height: 56px;
     max-height: 56px;
-    padding-left: 15px;
     text-align: left;
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 30px;
+    padding-top: 10px;
+    padding-left: 24px;
     color: #212121;
 }
 
-#secondaryTextLabel {
+QDialog #secondaryTextLabel {
     text-align: left;
-    padding-left: 15px;
     min-height: 36px;
     max-height: 36px;
     font-size: 20px;
-    color: #727272;
+    padding-left: 24px;
+    color: rgba(0, 0, 0, 0.54)
+}
+
+QDialog #inputLineEdit {
+    margin-right: 24px;
+    margin-left: 24px;
+    min-height: 36px;
+    max-height: 36px;
+    border: none;
+    border-bottom: 2px solid #1976D2;
+    font-size: 24px;
+    color: #212121;
+}
+
+QDialog #inputLineEdit:disabled {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.26);
 }
 
 #dialogButton {
@@ -380,9 +375,9 @@ ItemWidget #itemPic {
     padding-left: 12px;
     padding-right: 12px;
     font-weight: bold;
-    border: 1px solid #2196F3;
+    border-width: 1px;
+    border-style: solid;
     border-radius: 2px;
-    background: #2196F3;
     color: #FFFFFF;
 }
 
@@ -403,31 +398,145 @@ ItemWidget #itemPic {
     color: #212121;
 }
 
-#cancelButton:hover {
+QDialog #list {
+    min-height: 48px;
+}
+
+QDialog #list::item {
+    border: none;
+    font-weight: bold;
+    padding-left: 24px;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+#addItemDialog {
+    min-width: 896px;
+}
+
+#addGuardianDialog #dialogButton {
+     background: #2196F3;
+     border-color: #2196F3;
+}
+
+#addGuardianDialog #dialogButton:disabled {
+    background: rgba(0, 0, 0, 0.26);
+    border: 1px solid #E1E1E1;
+    color: #FFFFFF;
+}
+
+#addGuardianDialog #dialogButton:hover {
+     background: #2976D2;
+     border-color: #2976D2;
+}
+
+#addGuardianDialog #cancelButton:hover {
     color: #2196F3;
     border-color: #2196F3;
 }
 
-#dialogButton:hover {
-     background: #1976D2;
-     border: 1px solid #1976D2;
+#addItemDialog #dialogButton {
+    border-color: #F44336;
+    background: #F44336;
 }
 
-DriveWidget {
-    border: none;
-    min-height: 48px;
-    max-height: 48px;
-    font-weight: bold;
+#addItemDialog #dialogButton:disabled {
+    background: rgba(0, 0, 0, 0.26);
+    border: 1px solid #E1E1E1;
+    color: #FFFFFF;
 }
 
-#inputLineEdit {
-    padding-right: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
+#addItemDialog #cancelButton:hover {
+    color: #F44336;
+    border-color: #F44336;
+}
+
+#addItemDialog #dialogButton:hover {
+     background: #D32F2F;
+     border-color: #D32F2F;
+}
+
+
+#list::item:focus {
+    outline: 0;
+}
+
+#list::item:selected {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+#driveLetterLabel {
+    min-width: 36px;
+    max-width: 36px;
     min-height: 36px;
     max-height: 36px;
+    border-radius: 18px;
+    qproperty-alignment: AlignCenter;
+    font-weight : bold;
+    color: #FFFFFF;
+}
+
+#addItemDialog #iconTextLabel #textLabel {
+    font-weight: bold;
+    color: #727272;
+}
+
+#fileIcon {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    image: url(:/img/filesButton.png);
+}
+
+#folderIcon {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    image: url(:/img/foldersButton.png);
+}
+
+#appIcon {
+    min-width: 36px;
+    max-width: 36px;
+    min-height: 36px;
+    max-height: 36px;
+    image: url(:/img/appsButton.png);
+}
+
+#addGuardianDialog #driveLetterLabel{
+    background: #2196F3;
+}
+
+#addItemDialog #driveLetterLabel{
+    background: #F44336;
+}
+
+#driveNameLabel {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+#flatButton {
+    background: none;
     border: none;
-    border-bottom: 2px solid #1976D2;
-    font-size: 24px;
-    color: #212121;
+    color: #F44336;
+    min-height: 36px;
+    max-height: 36px;
+    border-radius: 2px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 8px;
+    margin-right: 15px;
+}
+
+#flatButton:hover {
+    color: #D32F2F;
+}
+
+#flatButton:disabled {
+    color: rgba(0, 0, 0, 0.26);
+}
+
+#flatButton:pressed {
+    background: rgba(0, 0, 0, 0.12);
 }
