@@ -1,6 +1,7 @@
 QWidget {
     font-family: "Calibri";
     font-size: 20px;
+    qproperty-windowIcon: url(:/ico/guardianIcon.ico);
 }
 
 QPushButton {
@@ -13,6 +14,19 @@ QListWidget {
      border: none;
      outline: 0;
      background: transparent;
+}
+
+QMessageBox QPushButton {
+    background: none;
+    border: none;
+    color: #212121;
+    min-height: 36px;
+    max-height: 36px;
+    border-radius: 2px;
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-top: 8px;
+    margin-right: 15px;
 }
 
 QListWidget::item {
@@ -202,6 +216,10 @@ QListWidget::item {
 
 #toolbar #deleteButton:hover {
     border-image: url(:/img/deleteButtonHover.png);
+}
+
+#toolbar #deleteButton:disabled {
+    border-image: url(:/img/deleteButtonDisabled.png);
 }
 
 #toolbar #lockButton{

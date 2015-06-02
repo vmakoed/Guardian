@@ -12,9 +12,6 @@ public:
     static QSqlDatabase database;
     static QSqlQuery query;
 
-    Database();
-    ~Database();
-
     static void connect(QString pathToDatabase);
     static void disconnect();
 

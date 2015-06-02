@@ -5,8 +5,6 @@
 
 #include <QMouseEvent>
 
-#include <QDebug>
-
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
@@ -48,6 +46,7 @@ void MainWindow::createToolbar()
 
     deleteButton = new QPushButton();
     deleteButton->setObjectName("deleteButton");
+    deleteButton->setDisabled(true);
     connect(deleteButton, &QPushButton::pressed, this, &MainWindow::deleteClicked);
     toolButtons->addButton(deleteButton);
 
@@ -173,7 +172,8 @@ void MainWindow::createListBoxes()
     listBox->setCurrentWidget(guardiansListBox);
     listBox->setObjectName("listboxstacked");
 
-    connect(itemsListBox, &QListWidget::itemSelectionChanged, this, &MainWindow::sendSelection);
+    connect(itemsListBox, &QListWidget::itemSelectionChanged, this, &MainWindow::sendItemSelection);
+    connect(guardiansListBox, &QListWidget::itemSelectionChanged, this, &MainWindow::sendGuardianSelection);
 }
 
 void MainWindow::composeMainWindow()
@@ -262,6 +262,8 @@ void MainWindow::setGuardianState(QString *guardianName, GUARDIAN_STATE state, c
 
         i++;
     }
+
+    clearSelection();
 }
 
 void MainWindow::setItems(QList<Item*> *srcItemsList)
@@ -279,6 +281,8 @@ void MainWindow::addItem(Item* item)
     itemsList->append(new ItemListWidget(item));
     itemsListBox->addItem(new QListWidgetItem);
     itemsListBox->setItemWidget(itemsListBox->item(itemsListBox->count() - 1), itemsList->at(itemsListBox->count() - 1));
+
+    clearSelection();
 }
 
 void MainWindow::clearItems()
@@ -292,17 +296,21 @@ void MainWindow::addGuardian(Guardian *guardian)
     guardiansList->append(new GuardianListWidget(guardian));
     guardiansListBox->addItem(new QListWidgetItem);   
     guardiansListBox->setItemWidget(guardiansListBox->item(guardiansListBox->count() - 1), guardiansList->at(guardiansListBox->count() - 1));
+
+    clearSelection();
 }
 
 Guardian* MainWindow::acquireGuardianToDelete()
 {
-    return guardiansList->at(guardiansListBox->currentRow() - 1)->getGuardian();
+    return guardiansList->at(guardiansListBox->currentRow())->getGuardian();
 }
 
 void MainWindow::deleteSelectedGuardian()
 {
     guardiansList->removeAt(guardiansListBox->currentRow());
     delete guardiansListBox->item(guardiansListBox->currentRow());
+
+    clearSelection();
 }
 
 Item *MainWindow::acquireItemToDelete()
@@ -314,6 +322,8 @@ void MainWindow::deleteSelectedItem()
 {
     itemsList->removeAt(itemsListBox->currentRow());
     delete itemsListBox->item(itemsListBox->currentRow());
+
+    clearSelection();
 }
 
 void MainWindow::toggleItemSwitch(ITEM_TYPE type)
@@ -330,7 +340,7 @@ void MainWindow::toggleItemSwitch(ITEM_TYPE type)
         emit navigationSwitched(foldersButton);
         break;
 
-    case ITEM_APP:
+    case ITEM_SYSTEM:
         systemButton->setChecked(true);
         emit navigationSwitched(systemButton);
         break;
@@ -377,6 +387,11 @@ void MainWindow::enableLockButton(bool value)
     }
 }
 
+void MainWindow::enableDeleteButton(bool value)
+{
+    deleteButton->setEnabled(value);
+}
+
 void MainWindow::setLockButtonOn()
 {
     lockManageButton->setCurrentWidget(lockButton);
@@ -407,15 +422,27 @@ void MainWindow::setLockButton(bool value)
     }
 }
 
-void MainWindow::sendSelection()
+void MainWindow::sendItemSelection()
 {
-    if(itemsListBox->selectedItems().isEmpty() == false && itemsListBox->currentRow() >= 0)
+    if(itemsListBox->selectedItems().isEmpty() == false && itemsListBox->currentRow() >= 0 && itemsListBox->currentRow() < itemsList->count())
     {
         emit itemSelected(itemsList->at(itemsListBox->currentRow())->getItem());
     }
     else
     {
         emit itemSelected(nullptr);
+    }
+}
+
+void MainWindow::sendGuardianSelection()
+{
+    if(guardiansListBox->selectedItems().isEmpty() == false && guardiansListBox->currentRow() >= 0 && guardiansListBox->currentRow() < guardiansList->count())
+    {
+        emit guardianSelected(guardiansList->at(guardiansListBox->currentRow())->getGuardian());
+    }
+    else
+    {
+        emit guardianSelected(nullptr);
     }
 }
 

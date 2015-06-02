@@ -18,13 +18,13 @@ public:
     explicit DrivesScanner(QObject *parent = 0);
     void scan(char *drives);
     QString *getStorageName(char drive);
-signals:
-    void driveMounted(char driveLetter);
-    void driveUnmounted(char driveLetter);
+
+signals:   
+    void drivesMounted(char *alteredDrives, int alteredDrivesCapacity);
+    void drivesUnmounted(char *alteredDrives, int alteredDrivesCapacity);
 
 public slots:
     void startScan();
-    void stopScan();
 };
 
 #endif // DRIVESSCANNER_H

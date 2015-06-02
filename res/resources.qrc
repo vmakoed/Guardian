@@ -26,6 +26,10 @@
         <file>unlockButtonDisabled.png</file>
         <file>unlockButtonHover.png</file>
         <file>lockButton.png</file>
+        <file>deleteButtonDisabled.png</file>
         <file>guardianIconLabel.png</file>
+    </qresource>
+    <qresource prefix="/ico">
+        <file>guardianIcon.ico</file>
     </qresource>
 </RCC>

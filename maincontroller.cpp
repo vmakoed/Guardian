@@ -1,13 +1,24 @@
 #include "maincontroller.h"
-#include <QDebug>
 
 MainController::MainController(QObject *parent) : QObject(parent)
 {
-    mainWindow = new MainWindow;
     drivesScanner = new DrivesScanner;
-
+    mainWindow = nullptr;
     addGuardianDialog = nullptr;
     addItemDialog = nullptr;
+
+    connect(drivesScanner, &DrivesScanner::drivesMounted, this, &MainController::drivesMounted);
+    connect(drivesScanner, &DrivesScanner::drivesUnmounted, this, &MainController::drivesUnmounted);
+}
+
+void MainController::launchGUI()
+{
+    if(mainWindow != nullptr)
+    {
+        return;
+    }
+
+    mainWindow = new MainWindow;
 
     connect(mainWindow, &MainWindow::addGuardianClicked, this, &MainController::showAddGuardianDialog);
     connect(mainWindow, &MainWindow::addItemClicked, this, &MainController::showAddItemDialog);
@@ -20,11 +31,24 @@ MainController::MainController(QObject *parent) : QObject(parent)
 
     connect(mainWindow, &MainWindow::itemSelected, this, &MainController::setProtection);
 
-    connect(drivesScanner, &DrivesScanner::driveMounted, this, &MainController::driveMounted);
-    connect(drivesScanner, &DrivesScanner::driveUnmounted, this, &MainController::driveUnmounted);
+    connect(mainWindow, SIGNAL(itemSelected(Item*)), this, SLOT(setDelete(Item*)));
+    connect(mainWindow, SIGNAL(guardianSelected(Guardian*)), this, SLOT(setDelete(Guardian*)));
 
     connect(mainWindow, &MainWindow::itemProtectionEnabled, this, &MainController::enableProtection);
     connect(mainWindow, &MainWindow::itemProtectionDisabled, this, &MainController::disableProtection);
+
+    connect(this, &MainController::guardianStateChanged, mainWindow, &MainWindow::setGuardianState);
+
+    connect(this, &MainController::guardianAdded, mainWindow, &MainWindow::addGuardian);
+    connect(this, &MainController::itemAdded, mainWindow, &MainWindow::toggleItemSwitch);
+
+    connect(this, &MainController::selectedGuardianDeleted, mainWindow, &MainWindow::deleteSelectedGuardian);
+    connect(this, &MainController::selectedItemDeleted, mainWindow, &MainWindow::deleteSelectedItem);
+
+    setGuardians();
+    mainWindow->switchtoGuardians();
+
+    mainWindow->show();
 }
 
 void MainController::launch()
@@ -32,9 +56,11 @@ void MainController::launch()
     QPixmap *p = new QPixmap(":/img/guardianIcon.png");
     trayIcon = new QSystemTrayIcon(*p, this);
     trayIcon->show();
+    trayIcon->showMessage("Guardian", "Guardian application started", QSystemTrayIcon::Information);
 
-    DataManager::connect("C:/Users/Victor Makoed/Google Drive/Qt Creator/GuardianModules/guardian.db");
-    setGuardians();
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainController::trayIconAction);
+
+    DataManager::connect(QDir::currentPath() + "/guardian.db");
 
     lockAll();
 
@@ -65,9 +91,6 @@ void MainController::launch()
 
     connect(scanThread, &QThread::started, drivesScanner, &DrivesScanner::startScan);
     scanThread->start();
-
-    mainWindow->switchtoGuardians();
-    mainWindow->show();
 }
 
 void MainController::lockAll()
@@ -78,7 +101,6 @@ void MainController::lockAll()
     ItemsLocker::alterAccess(itemsList, LOCKED);
     DataManager::unmountAll();
     DataManager::setItemsState(itemsList, LOCKED);
-    mainWindow->setItemsState(itemsList, LOCKED);
 }
 
 void MainController::createSystemLocker()
@@ -105,25 +127,44 @@ void MainController::setGuardians()
     mainWindow->setGuardians(DataManager::getGuardians());
 }
 
+void MainController::drivesMounted(char *alteredDrives, int alteredDrivesCapacity)
+{
+    while(alteredDrivesCapacity > 0)
+    {
+        driveMounted(alteredDrives[alteredDrivesCapacity - 1]);
+
+        alteredDrivesCapacity--;
+    }
+}
+
+void MainController::drivesUnmounted(char *alteredDrives, int alteredDrivesCapacity)
+{
+    while(alteredDrivesCapacity > 0)
+    {
+        driveUnmounted(alteredDrives[alteredDrivesCapacity - 1]);
+
+        alteredDrivesCapacity--;
+    }
+}
+
 void MainController::driveMounted(char drive)
 {
-    QString *guardianName = new QString;
-    guardianName = FileEncryption::defineGuardian(drive);
+    QString *guardianName = FileEncryption::defineGuardian(drive);
 
     if(guardianName == nullptr)
     {
-        //NOTAGUARDIAN
-
         resetAddGuardianDialog();
     }
     else
-    {
+    {                                                                     
         QString *encryptedKey = new QString;
         encryptedKey = DataManager::getEncryptedKey(*guardianName);
 
         if(FileEncryption::authentificate(drive, *encryptedKey))
         {
-            mainWindow->setGuardianState(guardianName, MOUNTED, drive);
+            trayIcon->showMessage(*guardianName + " mounted", "Unlocking protected items");
+
+            emit guardianStateChanged(guardianName, MOUNTED, drive);
 
             DataManager::setGuardianState(guardianName, MOUNTED, drive);
 
@@ -134,21 +175,17 @@ void MainController::driveMounted(char drive)
             ItemsLocker::alterAccess(items, UNLOCKED);
             DataManager::setItemsState(items, UNLOCKED);
 
-            items->append(DataManager::getSystemItem());
-
             if(DataManager::isSystemKey(*guardianName) == true)
             {
-                if(DataManager::isSystemUnlocked() == false && DataManager::isSystemProtected() == true)
-                {
-                    systemLocker->setIsKeyMounted(true);
-                    emit unlockSystemRequest();
+                systemLocker->setIsKeyMounted(true);
+                DataManager::setSystemUnlocked(true);
 
-                    DataManager::setSystemUnlocked(true);
+                if(DataManager::isSystemProtected() == true)
+                {
+                    emit unlockSystemRequest();
                 }
             }
         }
-
-        mainWindow->clearSelection();
 
         resetAddItemDialog();
     }
@@ -161,11 +198,13 @@ void MainController::driveUnmounted(char drive)
 
     if(guardianName == nullptr)
     {
-        //NOTAGUARDIAN
+        resetAddGuardianDialog();
     }
     else
     {
-        mainWindow->setGuardianState(guardianName, UNMOUNTED, drive);
+        emit guardianStateChanged(guardianName, UNMOUNTED, drive);
+
+        trayIcon->showMessage(*guardianName + " unmounted", "Locking protected items");
 
         DataManager::setGuardianState(guardianName, UNMOUNTED, drive);
 
@@ -186,16 +225,14 @@ void MainController::driveUnmounted(char drive)
         ItemsLocker::alterAccess(items, LOCKED);
         DataManager::setItemsState(items, LOCKED);
 
-        mainWindow->clearSelection();
-
         if(DataManager::isSystemKey(*guardianName) == true)
         {
-            if(DataManager::isSystemUnlocked() == true && DataManager::isSystemProtected() == true)
-            {
-                systemLocker->setIsKeyMounted(false);
-                emit lockSystemRequest();
+            systemLocker->setIsKeyMounted(false);
+            DataManager::setSystemUnlocked(false);
 
-                DataManager::setSystemUnlocked(false);
+            if(DataManager::isSystemProtected() == true)
+            {
+                emit lockSystemRequest();
             }
         }
     }
@@ -205,7 +242,7 @@ void MainController::enableProtection(Item *item)
 {
     item->setIsProtected(true);
 
-    if(item->getType() == ITEM_APP)
+    if(item->getType() == ITEM_SYSTEM)
     {
         DataManager::setSystemProtected(true);
 
@@ -231,7 +268,7 @@ void MainController::disableProtection(Item *item)
 {
     item->setIsProtected(false);
 
-    if(item->getType() == ITEM_APP)
+    if(item->getType() == ITEM_SYSTEM)
     {
         DataManager::setSystemProtected(false);
     }
@@ -328,7 +365,7 @@ void MainController::addGuardian(QString drive, QString name)
     FileEncryption::writeCryptInfo(guardian->getDrive(), guardian->getName(), cryptObject->key, cryptObject->inHex);
     DataManager::addGuardian(guardian->getName(), *(new QString(cryptObject->outHex)), guardian->getDrive());
 
-    mainWindow->addGuardian(guardian);
+    emit guardianAdded(guardian);
 }
 
 void MainController::createSystemKey(QString guardianName)
@@ -337,7 +374,7 @@ void MainController::createSystemKey(QString guardianName)
 
     createSystemLocker();
 
-    mainWindow->toggleItemSwitch(ITEM_APP);
+    emit itemAdded(ITEM_SYSTEM);
 }
 
 void MainController::addItem(QString category, QString path, QString guardianName)
@@ -351,7 +388,7 @@ void MainController::addItem(QString category, QString path, QString guardianNam
 
     if(DataManager::isPathReserved(path) == true)
     {
-        // FILE IS ALREADY PROTECTED
+        showErrorMessageBox("The item is already protected");
 
         return;
     }
@@ -384,44 +421,32 @@ void MainController::addItem(QString category, QString path, QString guardianNam
     ItemsLocker::alterAccess(item, UNLOCKED);
     DataManager::addItem(name, path, type, UNLOCKED, true, guardianName);
 
-    mainWindow->toggleItemSwitch(type);
+    emit itemAdded(type);
 }
 
 void MainController::deleteGuardian()
 {
     Guardian *guardian = mainWindow->acquireGuardianToDelete();
 
-    if(guardian->getState() == UNMOUNTED)
-    {
-        // ERROR: GUARDIAN NOT MOUNTED
-        return;
-    }
-
     ItemsLocker::alterAccess(DataManager::getItems(guardian->getName()), UNLOCKED);
     FileManager::deleteFile(guardian->getDrive(), "pass.guardian");
     DataManager::deleteItems(guardian->getName());
     DataManager::deleteGuardian(guardian->getName());
 
-    mainWindow->deleteSelectedGuardian();
+    emit selectedGuardianDeleted();
+
 }
 
 void MainController::deleteItem()
 {
     Item *item = mainWindow->acquireItemToDelete();
 
-    if(item->getItemGuardianState() == LOCKED)
-    {
-        //ERROR: GUARDIAN NOT MOUNTED
-        return;
-    }
-
-    if(item->getType() == ITEM_APP)
+    if(item->getType() == ITEM_SYSTEM)
     {
         systemLockThread->exit(0);
         systemLockThread->wait();
         systemLockThread->deleteLater();
 
-       // delete[] systemLockThread;
         delete[] systemLocker;
 
         DataManager::deleteSystemKey();
@@ -432,11 +457,13 @@ void MainController::deleteItem()
         DataManager::deleteItem(item->getPath());
     }
 
-    mainWindow->deleteSelectedItem();
+    emit selectedItemDeleted();
 }
 
 void MainController::switchListbox(QAbstractButton *button)
 {
+    mainWindow->clearSelection();
+
     if(button->text() == "Guardians")
     {
         mainWindow->switchtoGuardians();
@@ -478,12 +505,65 @@ void MainController::setProtection(Item *item)
     }
 }
 
+void MainController::setDelete(Guardian *guardian)
+{
+    if(guardian == nullptr)
+    {
+        mainWindow->enableDeleteButton(false);
+    }
+    else if(guardian->getState() == UNMOUNTED)
+    {
+        mainWindow->enableDeleteButton(false);
+    }
+    else
+    {
+        mainWindow->enableDeleteButton(true);
+    }
+}
+
+void MainController::setDelete(Item *item)
+{
+    if(item == nullptr)
+    {
+        mainWindow->enableDeleteButton(false);
+    }
+    else if(item->getItemGuardianState() == LOCKED)
+    {
+        mainWindow->enableDeleteButton(false);
+    }
+    else
+    {
+        mainWindow->enableDeleteButton(true);
+    }
+}
+
 void MainController::close()
 {
-    mainWindow->close();
-    trayIcon->hide();
-    DataManager::unmountAll();
-    lockAll();
+    mainWindow->hide();
+    delete[] mainWindow;
 
-    exit(0);
+    mainWindow= nullptr;
+
+    trayIcon->showMessage("Running in background", "Guardian is keeping your data secured");
+}
+
+void MainController::trayIconAction(QSystemTrayIcon::ActivationReason reason)
+{
+    if(reason == QSystemTrayIcon::Trigger)
+    {
+        launchGUI();
+    }
+    else if(reason == QSystemTrayIcon::Context)
+    {
+        trayIcon->setVisible(false);
+        exit(0);
+    }
+}
+
+void MainController::showErrorMessageBox(QString text)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowFlags(Qt::FramelessWindowHint);
+    msgBox.setText(text);
+    msgBox.exec();
 }

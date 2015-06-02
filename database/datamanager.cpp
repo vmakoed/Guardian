@@ -66,7 +66,7 @@ QList<Item *> *DataManager::getItems(ITEM_TYPE type)
     {
         typeInt = 1;
     }
-    else if(type == ITEM_APP)
+    else if(type == ITEM_SYSTEM)
     {
         typeInt = 2;
     }
@@ -131,7 +131,7 @@ QList<Item *> *DataManager::getItems(QString guardianName)
             break;
 
         case 2:
-            itemsTypesList->append(ITEM_APP);
+            itemsTypesList->append(ITEM_SYSTEM);
             break;
         }
     }
@@ -170,9 +170,16 @@ QString *DataManager::getSystemKeyName()
 
 Item *DataManager::getSystemItem()
 {
-    return new Item("SYSTEM", "", ITEM_APP, UNLOCKED, Database::selectBoolean("protected", "systemkey"),
-                    *(Database::selectString("name", "guardian",
-                                           Database::where("id", Database::selectInteger("guardian", "systemkey")))));
+    int id = Database::selectInteger("guardian", "systemkey");
+    bool mounted = Database::selectBoolean("mounted", "guardian", Database::where("id", id));
+
+    return new Item("SYSTEM",
+                    "",
+                    ITEM_SYSTEM,
+                    mounted ? UNLOCKED : LOCKED,
+                    Database::selectBoolean("protected", "systemkey"),
+                    *(Database::selectString("name", "guardian", Database::where("id", id)))
+                   );
 }
 
 QList<Guardian *> *DataManager::getGuardians()
@@ -323,11 +330,7 @@ void DataManager::setItemProtected(QString path, bool value)
 
 QString *DataManager::getEncryptedKey(QString guardianName)
 {
-    QString *key = new QString;
-
-    key = Database::selectString("code", "guardian", Database::where("name", guardianName));
-
-    return key;
+    return Database::selectString("code", "guardian", Database::where("name", guardianName));
 }
 
 void DataManager::addGuardian(QString guardianName, QString encryptedText, char drive)
@@ -355,7 +358,7 @@ void DataManager::addGuardian(QString guardianName, QString encryptedText, char 
 
 void DataManager::deleteGuardian(QString guardianName)
 {
-    Database::prepare("delete from guardian where guardian = :guardian");
+    Database::prepare("delete from guardian where name = :name");
     Database::bind("name", guardianName);
     Database::exec();
 }
@@ -396,7 +399,7 @@ void DataManager::addItem(QString itemName, QString itemPath, ITEM_TYPE category
     case ITEM_FOLDER:
         Database::bind("type", 1);
         break;
-    case ITEM_APP:
+    case ITEM_SYSTEM:
         Database::bind("type", 2);
         break;
     }

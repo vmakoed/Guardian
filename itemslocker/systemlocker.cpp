@@ -17,7 +17,7 @@ void SystemLocker::lock()
 
         LockWorkStation();
 
-        Sleep(5000);
+        Sleep(500);
     }
 
 }

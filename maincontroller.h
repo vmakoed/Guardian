@@ -2,10 +2,10 @@
 #define MAINCONTROLLER_H
 
 #include <QObject>
-#include <QDebug>
 #include <QThread>
+#include <QDir>
 #include <QSystemTrayIcon>
-#include <QMenu>
+#include <QMessageBox>
 
 #include "item.h"
 #include "guardian.h"
@@ -39,6 +39,7 @@ public:
     explicit MainController(QObject *parent = 0);
 
     void launch();
+    void launchGUI();
 
     void lockAll();
 
@@ -46,6 +47,9 @@ public:
 
     void setItems();
     void setGuardians();
+
+    void drivesMounted(char *alteredDrives, int alteredDrivesCapacity);
+    void drivesUnmounted(char *alteredDrives, int alteredDrivesCapacity);
 
     void driveMounted(char drive);
     void driveUnmounted(char drive);
@@ -71,19 +75,32 @@ public:
     void systemKeyMounted();
     void sytemKeyUnmounted();
 
-    void enableProtection(Item *item);
-    void disableProtection(Item *item);
-
+    void showErrorMessageBox(QString text);
 
 signals:
     void lockSystemRequest();
     void unlockSystemRequest();
+
+    void itemAdded(ITEM_TYPE);
+    void guardianAdded(Guardian*);
+
+    void selectedItemDeleted();
+    void selectedGuardianDeleted();
+
+    void guardianStateChanged(QString*, GUARDIAN_STATE, char);
 
 public slots:
     void switchListbox(QAbstractButton *button);
     void setProtection(Item *item);
     void close();
 
+    void enableProtection(Item *item);
+    void disableProtection(Item *item);
+
+    void setDelete(Guardian *guardian);
+    void setDelete(Item *item);
+
+    void trayIconAction(QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif // MAINCONTROLLER_H

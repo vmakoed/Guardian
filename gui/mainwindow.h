@@ -67,13 +67,17 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
-    void sendSelection();
+    void sendItemSelection();
+    void sendGuardianSelection();
+
     void enableLockButton(bool value);
+    void enableDeleteButton(bool value);
 
     void clearSelection();
     void setLockButtonOn();
     void setUnlockButtonOn();
     void clearItems();
+
 signals:
     void navigationSwitched(QAbstractButton *button);
 
@@ -86,6 +90,7 @@ signals:
     void deleteItemClicked();
 
     void itemSelected(Item *item);
+    void guardianSelected(Guardian *guardian);
 
     void itemProtectionEnabled(Item *item);
     void itemProtectionDisabled(Item *item);

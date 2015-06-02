@@ -3,8 +3,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-#include <QDebug>
-
 AddGuardianDialog::AddGuardianDialog(QStringList *drives, QStringList *driveNames)
 {
     setObjectName("addGuardianDialog");

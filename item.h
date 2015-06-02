@@ -3,7 +3,7 @@
 
 #include <QString>
 
-typedef enum {ITEM_FILE, ITEM_FOLDER, ITEM_APP} ITEM_TYPE;
+typedef enum {ITEM_FILE, ITEM_FOLDER, ITEM_SYSTEM} ITEM_TYPE;
 typedef enum {LOCKED, UNLOCKED} ITEM_GUARDIAN_STATE;
 
 class Item

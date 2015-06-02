@@ -1,20 +1,9 @@
 #include "database.h"
 
 #include <QVariant>
-#include <QDebug>
 
 QSqlDatabase Database::database;
 QSqlQuery Database::query;
-
-Database::Database()
-{
-
-}
-
-Database::~Database()
-{
-
-}
 
 void Database::connect(QString pathToDatabase)
 {
@@ -132,7 +121,6 @@ int Database::selectInteger(QString column, QString table, QString *whereClause)
     }
 
     query.first();
-    qDebug() << query.value(0).toInt();
     return query.value(0).toInt();
 }
 

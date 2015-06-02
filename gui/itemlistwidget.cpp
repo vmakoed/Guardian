@@ -18,7 +18,7 @@ ItemListWidget::ItemListWidget(Item *item)
         itemTypeLabel->setObjectName("folderLabel");
         break;
 
-    case ITEM_APP:
+    case ITEM_SYSTEM:
         itemTypeLabel->setObjectName("appLabel");
         break;
     }

@@ -71,42 +71,47 @@ void DrivesScanner::startScan()
 
         if(drivesCapacity > infoN->storagesCapacity)
         {
+            int alteredDrivesCapacity = 0;
+            char *alteredDrives = new char[MAX_NUM_OF_DRIVES];
+
             for(int i = 0; i < strlen(oldDrives); i++)
             {
                 char drive = oldDrives[i];
 
                 if(strchr(infoN->driveLetters, drive) == nullptr)
                 {
-                    emit driveUnmounted(drive);
-                    break;
+                    alteredDrives[alteredDrivesCapacity] = drive;
+                    alteredDrivesCapacity++;
                 }
             }
+
+            emit drivesUnmounted(alteredDrives, alteredDrivesCapacity);
 
             strcpy(oldDrives, infoN->driveLetters);
             drivesCapacity = infoN->storagesCapacity;
         }
         else if(drivesCapacity < infoN->storagesCapacity)
         {
+            int alteredDrivesCapacity = 0;
+            char *alteredDrives = new char[MAX_NUM_OF_DRIVES];
+
             for(int i = 0; i < infoN->storagesCapacity; i++)
             {
                 char drive = infoN->driveLetters[i];
+
                 if(strchr(oldDrives, drive) == nullptr)
                 {
-                    emit driveMounted(drive);
-                    break;
+                    alteredDrives[alteredDrivesCapacity] = drive;
+                    alteredDrivesCapacity++;
                 }
             }
+
+            emit drivesMounted(alteredDrives, alteredDrivesCapacity);
 
             strcpy(oldDrives, infoN->driveLetters);
             drivesCapacity = infoN->storagesCapacity;
         }
 
-        Sleep(1000);
+        Sleep(500);
     }
 }
-
-void DrivesScanner::stopScan()
-{
-
-}
-
